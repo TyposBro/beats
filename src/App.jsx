@@ -1,5 +1,5 @@
 function App() {
-  return <></>;
+  return <div className="w-screen h-screen bg-slate-400"> Foo </div>;
 }
 
 export default App;
