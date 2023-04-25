@@ -91,18 +91,33 @@ const Binaurial = () => {
           <div className="absolute flex flex-col w-fit bottom-1 left-1 text-neutral-300">
             <span className="">Yorushika</span>
             <span>Moonlight</span>
-            <span>Yamaguchi</span>
+            <span>Miyagochi</span>
           </div>
         </div>
-      </div>
-      <div className="w-full basis-24 bg-yellow-600 grow flex justify-between items-center">
-        <MdShuffle className="grow h-14 p-2 text-amber-300" />
-        <div className="flex justify-between grow-[3] items-center">
-          <MdOutlineChevronLeft className="align-start grow h-24 text-gray-300" />
-          <AiOutlinePlayCircle className="align-start grow h-24 text-gray-300" />
-          <MdOutlineChevronRight className="align-start grow h-24 text-gray-300" />
+        <div className="flex justify-between px-2 items-center text-lg">
+          <MdBookmarkBorder className="h-12 w-8" />
+          <div className="grow flex flex-col items-center">
+            <span className="font-bold">Miyagochi</span>
+            <span className="text-gray-800 font-normal">Yorushika</span>
+            <span className="text-gray-800 font-normal">Moonlight Live</span>
+          </div>
+          <AiOutlineMore className="h-12 w-8" />
         </div>
-        <MdOutlineRepeat className="grow h-14 p-2 text-amber-300" />
+      </div>
+      <div className="flex flex-col w-full basis-24 bg-yellow-600 grow">
+        <div className=" flex justify-between items-center">
+          <MdShuffle className="grow h-16 p-2 text-amber-300" />
+          <div className="flex justify-between grow-[3] items-center">
+            <MdOutlineChevronLeft className="align-start grow h-24 text-gray-300" />
+            <AiOutlinePlayCircle className="align-start grow h-24 text-gray-300" />
+            <MdOutlineChevronRight className="align-start grow h-24 text-gray-300" />
+          </div>
+          <MdOutlineRepeat className="grow h-16 p-2 text-amber-300" />
+        </div>
+        <div className="grid grid-rows-1 grid-cols-3 justify-items-center px-4 text-gray-300 opacity-95">
+          <span className="justify-self-start">1.00 x</span>
+          <span className="">#3 - 3/8</span>
+        </div>
       </div>
     </div>
   );
