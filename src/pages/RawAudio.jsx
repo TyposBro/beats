@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-
 import {
   AiOutlineMenu,
   AiOutlineHeart,
@@ -18,20 +17,20 @@ import {
   MdOutlineChevronLeft,
 } from "react-icons/md";
 
-const brand = "rgba(0, 229, 139, 1)";
+const brand = "rgba(202, 138, 4 , 1)";
 
 const getOptions = (ref, plugins = []) => {
   return {
     container: ref,
-    waveColor: "rgba(250, 239, 221, 0.5)",
+    waveColor: "rgba(153, 147, 138, 0.5)",
     progressColor: brand,
-    cursorColor: brand,
+    cursorColor: "transparent",
     barWidth: 3,
     barRadius: 3,
     responsive: true,
     interact: true,
-    height: 40,
-    barHeight: 0.6,
+    height: 60,
+    barHeight: 1,
     // If true, normalize by the maximum peak instead of 1.0.
     normalize: true,
     // Use the PeakCache to improve rendering speed of large waveforms.
@@ -52,7 +51,11 @@ const getOptions = (ref, plugins = []) => {
 const Binaurial = () => {
   const [input, setInput] = useState(110);
   const [diff, setDiff] = useState(10);
-  const [blob, setBlob] = useState("/audio.mp3");
+
+  const [
+    blob,
+    // setBlob
+  ] = useState("/audio.mp3");
 
   const channel1 = useRef();
   const channel2 = useRef();
@@ -60,7 +63,8 @@ const Binaurial = () => {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
-  const [play, setPlay] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isBeneuralPlaying, setIsBeneuralPlaying] = useState(false);
 
   // create new WaveSurfer instance
   // On component mount and when url changes
@@ -70,7 +74,7 @@ const Binaurial = () => {
     wavesurfer.current.load(blob);
 
     wavesurfer.current.on("ready", () => {
-      setPlay(false);
+      setIsAudioPlaying(false);
       wavesurfer.current.setVolume(1);
     });
     // Removes events, elements and disconnects Web Audio nodes.
@@ -79,18 +83,18 @@ const Binaurial = () => {
   }, [blob]);
 
   const handlePlayPause = () => {
-    if (!play) {
+    if (!isAudioPlaying) {
       wavesurfer.current.playPause();
-      setPlay(true);
+      setIsAudioPlaying(true);
     } else {
-      setPlay(false);
+      setIsAudioPlaying(false);
       wavesurfer.current.playPause();
     }
   };
 
   useEffect(() => {
-    console.log(diff);
-    if (play) start();
+    if (isBeneuralPlaying) stop();
+    else start();
   }, [diff]);
 
   const onChange = (e) => {
@@ -103,7 +107,6 @@ const Binaurial = () => {
   };
 
   const start = () => {
-    if (play) stop();
     channel1.current = new (window.AudioContext || window.webkitAudioContent)();
     channel2.current = new (window.AudioContext || window.webkitAudioContent)();
 
@@ -121,17 +124,18 @@ const Binaurial = () => {
     //Play
     osc1.start();
     osc2.start();
-
-    setPlay(true);
+    setIsBeneuralPlaying(true);
   };
+
   const stop = () => {
     channel1.current.suspend();
     channel2.current.suspend();
-    setPlay(false);
+    setIsBeneuralPlaying(false);
   };
+
   return (
     <div className="w-screen h-screen bg-white flex flex-col">
-      <div className="grow-[3] m-2">
+      <div className="grow m-2">
         <div className="flex justify-end relative">
           <AiOutlineMenu className="w-12 h-12 p-2 cursor-pointer absolute start-0" />
           <AiOutlineHeart className="w-12 h-12 p-2 cursor-pointer basis-16" />
@@ -152,15 +156,15 @@ const Binaurial = () => {
         </div>
         <div className="flex justify-between px-2 items-center text-lg">
           <MdBookmarkBorder className="h-12 w-8" />
-          <div className="grow flex flex-col items-center">
+          <div className="grow flex flex-col items-center leading-6">
             <span className="font-bold">Miyagochi</span>
             <span className="text-gray-800 font-normal">Yorushika</span>
             <span className="text-gray-800 font-normal">Moonlight Live</span>
           </div>
           <AiOutlineMore className="h-12 w-8" />
         </div>
-        <div className="p-2">
-          <div id="waveform" ref={waveformRef} />
+        <div className="p-2 flex justify-stretch items-center">
+          <div className="h-full w-full" id="waveform" ref={waveformRef} />
         </div>
       </div>
       <div className="flex flex-col w-full basis-24 bg-yellow-600 grow">
@@ -171,7 +175,7 @@ const Binaurial = () => {
               className="align-start grow h-24 text-gray-300"
               onClick={() => wavesurfer.current.skip(-10)}
             />
-            {play ? (
+            {isAudioPlaying ? (
               <AiOutlinePauseCircle
                 className="align-start grow h-24 text-gray-300"
                 onClick={handlePlayPause}
